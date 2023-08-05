@@ -1,0 +1,40 @@
+.inputtext{
+    width: 100%;
+    padding-right: 5px;
+    padding-left: 10px;
+    border-radius: calc(0.5*100px);
+    font-size: 1rem;
+}
+.inputtext::placeholder{
+    color: #000;
+}
+.inputsubmit{
+    background: transparent;
+    color: #5b5b5b;
+    text-transform: capitalize;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 10px;
+}
+.inputtext,.inputsubmit{
+    height: 40px;
+    outline: none;
+    border: none;
+    
+}
+.searchbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.submitsearch{
+    height: 40px;
+    outline: none;
+    border: none;
+    color: white;
+    background: transparent;
+    text-transform: capitalize;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 10px;
+}

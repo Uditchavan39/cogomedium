@@ -1,0 +1,23 @@
+.userdiv{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: auto;
+    overflow: hidden;
+    }
+img{
+    border-radius: 50%;
+}
+.usernameandimg{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: fit-content;
+    margin-left: 5px;
+}
+.username{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    padding-left: 15px;
+}

@@ -1,0 +1,62 @@
+
+.usercard{
+    width: 150px;
+    justify-content: space-around;
+}
+.postbtn{
+    display: flex;
+    flex-direction: row-reverse;
+
+}
+.closemodal{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.filterbyauther{
+    align-items: center;
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+}
+.filtermodal{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 15px;
+    flex-direction: row;
+}
+
+.filterbutton{
+    width: max-content;
+    height: auto;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 10px;
+    height: 30px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+
+}
+.AiOutlineClose{
+    border: none;
+    cursor: pointer;
+}
+.CommentCarditem{
+    border: 1px solid;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.usercardstylecom{
+    border-bottom: 1px solid;
+    height: 50px;
+
+}
+.ulcom{
+    margin: 0;
+    padding: 0;
+}
+.commentboxtext{
+    min-height: 80px;
+    margin-left: 5px;
+}
