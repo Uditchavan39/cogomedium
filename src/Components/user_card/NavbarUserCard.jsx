@@ -12,7 +12,10 @@ userlogged ?
         <div className={styles.userdiv}>
         <img src="https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg" alt="Avatar"/>
     </div>
-    <div className={styles.username}>{userlogged}</div>
+    <div className={styles.username}>{userlogged}
+    <Link to='/signin' style={{color:'white' ,textDecoration:'none'}}>LogOut</Link>
+      
+    </div>
         </div>
     
     </>:

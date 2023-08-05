@@ -9,7 +9,7 @@ import SignIn from "../Route/SignIn";
 import axios from "axios";
  const NewPost=()=>{
     const obj={
-        isLoggedIn:localStorage.getItem('isLoggedIn')
+        isLoggedIn:localStorage.getItem('token')
        }
       
    const navigate=useNavigate();

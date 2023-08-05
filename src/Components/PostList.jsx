@@ -100,7 +100,8 @@ useEffect(()=>{
 },[]);
  return (
     <ul>
-    {aura.map((post)=>(<li key={post.post_id}>
+    {
+        postlist.map((post)=>(<li key={post.post_id}>
        {username===undefined ?
         <SinglePostCard post={post} key={post.post_id} />
        : username===post.username ?    <SinglePostCard post={post} key={post.post_id} />

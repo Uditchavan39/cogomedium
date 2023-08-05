@@ -215,7 +215,7 @@ const likeit=(e)=>{
        
         placeholder="Enter Content Here"
         />
-        { localStorage.getItem('isLoggedIn')
+        { localStorage.getItem('token')
   ?
         <div className={styles.editdeletepost}>
         <div className={styles.editpost}>

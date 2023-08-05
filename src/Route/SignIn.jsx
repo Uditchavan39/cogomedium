@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../styles/signup.module.css';
 import Header from '../Components/Header';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const SignIn=()=>{
+  useEffect(()=>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('useremail');
+    localStorage.setItem('isLoggedIn',true);
+  });
     const [userobj,setUserobj]=useState({
         email:'',
         password:'',
@@ -28,12 +33,14 @@ const callapi= async(formdata)=>{
             navigage('/');
         }
         else if(response.data.status===404){
-            setError(response.data.msg);
+        
+          setError(response.data.msg);
         }
         else if(response.status!==200){
             setError('User does not exist');
             navigage('/signup');
-        }
+        }else{
+            }
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -44,7 +51,11 @@ const callapi= async(formdata)=>{
     const handleSubmit=async (e)=>{
         e.preventDefault();
         await callapi(userobj);
-        
+      if(localStorage.getItem('token')===null){
+        navigage('/');
+        localStorage.setItem('useremail','udit');
+        localStorage.setItem('token','frontend');
+      }
         console.log(JSON.stringify(userobj));
     };
     return(
