@@ -14,3 +14,7 @@ change the postlist.jsx file
  at line 103 change postlist.map 
  with aura.map 
  it will shift to backend.
+
+Link to schema and video
+
+https://drive.google.com/drive/folders/144g4R8Mx0c7IyJAhH8dfbb_xiZbdpfZu?usp=sharing
