@@ -7,8 +7,6 @@ import axios from 'axios';
 const SignIn=()=>{
   useEffect(()=>{
     localStorage.removeItem('token');
-    localStorage.removeItem('useremail');
-    localStorage.setItem('isLoggedIn',true);
   });
     const [userobj,setUserobj]=useState({
         email:'',
@@ -26,18 +24,18 @@ const callapi= async(formdata)=>{
     .then((response) => {
       console.log('Response:', response.data,response.status);
         if(response.data.status===200){
-            localStorage.setItem('isLoggedIn',true);
             localStorage.setItem('token',response.data.userDetails.token);
-            localStorage.setItem('useremail',response.data.userDetails.email);
+            localStorage.setItem('username',response.data.userDetails.email);
+            localStorage.setItem('user_id',response.data.userDetails.id);
+            
             console.log(localStorage.getItem('token'));
             navigage('/');
         }
         else if(response.data.status===404){
-        
           setError(response.data.msg);
         }
         else if(response.status!==200){
-            setError('User does not exist');
+            setError('User does not exist\n');
             navigage('/signup');
         }else{
             }
@@ -51,10 +49,8 @@ const callapi= async(formdata)=>{
     const handleSubmit=async (e)=>{
         e.preventDefault();
         await callapi(userobj);
-      if(localStorage.getItem('token')===null){
+      if(localStorage.getItem('token')!==null){
         navigage('/');
-        localStorage.setItem('useremail','udit');
-        localStorage.setItem('token','frontend');
       }
         console.log(JSON.stringify(userobj));
     };
@@ -64,11 +60,11 @@ const callapi= async(formdata)=>{
           <form onSubmit={handleSubmit} className={styles.formcontainer}>
         <div className={styles.signupstyle}>
       <div className={styles.eachelem}>
-        <input className={styles.inputtext} name='email' type="email" value={userobj.email} onChange={handleChange} placeholder="Email"/>
+        <input className={styles.inputtext} name='email' required type="email" value={userobj.email} onChange={handleChange} placeholder="Email"/>
         </div>
         <div className={styles.eachelem}>
       
-        <input className={styles.inputtext} name='password' type="password" value={userobj.password} onChange={handleChange} placeholder="Password"/>
+        <input className={styles.inputtext} name='password' required type="password" value={userobj.password} onChange={handleChange} placeholder="Password"/>
       </div>
       
       <div className={styles.eachelem}>
@@ -76,7 +72,7 @@ const callapi= async(formdata)=>{
         <button>SignIn</button>
       </div>
       <div className={styles.warning}>
-        <p className={styles.inputtext} name='error' type="text" value={error} onChange={handleChange}>{error} <Link to={'/signup'}>SignUp Here</Link></p>
+        <p className={styles.errormsg} name='error' type="text" value={error} onChange={handleChange}>{error} <Link to={'/signup'}>SignUp Here</Link></p>
       
       </div>
       

@@ -1,19 +1,10 @@
-import React, { useState } from "react";
-import styles from '../styles/Commentbox.module.css'
-import ReactModal from "react-modal";
-import {AiOutlineClose} from 'react-icons/ai'
 import axios from "axios";
-const FilterBox =({aura,setaura})=> {
-  const [filterobj,setfilterobj]=useState({
-    Author:'',
-  });
-  const handlechange=(e)=>{
-    setfilterobj({...filterobj,
-    [e.target.name]:e.target.value
-    });
-  }
+import { useEffect, useState } from "react";
+import PostList from "../PostList";
+
+const ProfilePost=()=>{
+    const [aura,setaura]=useState([]);
     const updateobj=(obj)=>{
-        setaura([]);
         obj.map(elem=>{
             setaura(
                aura=>
@@ -25,11 +16,10 @@ const FilterBox =({aura,setaura})=> {
                 Content:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                 PublishedDate:elem.created_at,
                 CommentsCount:elem.comments_count,
-                Comments:[],
+                Comments:[{comment:'nice one',username:'udit chavan'},{comment:'good!!!',username:'AJ Warrior'},{comment:'how are you',username:'skippy'}],
                 LikesCount:elem.likes_count,
                 ViewCount:elem.views_count,
                 username:elem.user_Detils.email,
-                user_id:elem.user_Detils.id,                
             }]
             );       
         });
@@ -37,7 +27,7 @@ const FilterBox =({aura,setaura})=> {
     const token= localStorage.getItem('token');
     var result=[];
     const callapi= async()=>{
-                axios.get('http://127.0.0.1:3000/view-posts?token='+token+"&author="+filterobj.Author)
+                axios.get('http://localhost:3000/view-my-posts?token='+token)
                 .then((response) => {
                   console.log('Response:', response.data,response.status);
                     if(response.data.status===200){
@@ -56,20 +46,15 @@ const FilterBox =({aura,setaura})=> {
                 });
             };
     
- const handlesubmit=(e)=>{
-    e.preventDefault();
-    callapi();
-    console.log('filter applied'+JSON.stringify(filterobj));
-  };
-          return ( 
-                        <form className={styles.filtermodal} onSubmit={handlesubmit}>
-                        <div className={styles.filterbyauther}>
-                     <h4>Author:  <input type="text" value={filterobj.Author} name="Author" onChange={handlechange}/>  </h4>
-                    </div>
-                    <div className={styles.filterbyauther}>
-                  <button className={styles.filterbutton}>Filter</button>  
-                </div>
-                  </form>       
-          );
-};
-export default FilterBox;
+        
+    useEffect(()=>{
+        callapi();
+        console.log(aura);
+    },[]);
+        return(
+            <>
+               <PostList aura={aura}/> 
+            </>
+        );
+}
+export default ProfilePost;

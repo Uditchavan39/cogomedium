@@ -84,3 +84,8 @@ textarea{
     justify-content: center;
     margin: 15px;
 }
+.draftsubmit{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

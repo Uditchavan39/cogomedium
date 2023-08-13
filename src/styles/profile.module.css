@@ -12,3 +12,38 @@ h1{
 .mypostlist{
 
 }
+.postsformetotal{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    justify-content: center;
+}
+.postsforme{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+.postsformebtn{
+    justify-content: center;
+    
+}
+.imgsize{
+   width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: sans-serif;
+    transition: color 300ms ease-in-out;
+    outline: none;
+    overflow: hidden;   
+
+}
+.img{
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+}
+h5{
+    text-align: center;
+}

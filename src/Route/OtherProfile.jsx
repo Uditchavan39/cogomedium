@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
-import Navbar from "../Components/Navbars/Navbar";
-import PostList from "../Components/PostList";
-import styles from '../styles/profile.module.css';
 import axios from "axios";
-import ProfilePost from "../Components/post_request/ProfilePost";
-import { useNavigate } from "react-router-dom";
-import ProfileNavbar from "../Components/Navbars/ProfileNavbar";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import Navbar from "../Components/Navbars/Navbar";
+import styles from '../styles/profile.module.css';
 import Header from "../Components/Header";
-const Profile=()=>{
+const OtherProfile=()=>{
+    const location=useLocation();
+    const user_id=location.state.user_id;
     const [profileobj,setProfileobj]=useState({
-        user_id:localStorage.getItem('user_id'),
+        user_id:user_id,
         aboutme:'Dummy',
         email:'dummy',
         username:'dummy',
         profile_pic_url:'dummy',
     });
-    const token= localStorage.getItem('token');
+    var token=localStorage.getItem('token');
     const updateobj=(obj)=>{
             setProfileobj(
                {
@@ -26,8 +25,8 @@ const Profile=()=>{
                 profile_pic_url:obj.profile_pic_url,
             });  
     };
-    const profilefetch= async()=>{
-        axios.get('http://localhost:3000/get-profile?token='+token+"&user_id="+profileobj.user_id)
+    const callapi= async()=>{
+        axios.get('http://localhost:3000/get-profile?token='+token+"&user_id="+user_id)
         .then((response) => {
           console.log('Response:', response.data,response.data.status);
           if(response.data.status===200){
@@ -42,12 +41,12 @@ const Profile=()=>{
     };
    
     useEffect(()=>{
-        profilefetch();
+        callapi();
     },[]);
    
     return(
         <>
-        <ProfileNavbar />
+        <Navbar/>
         <div className={styles.imgsize}>
         <img className={styles.img} alt="Avatar" src={profileobj.profile_pic_url}/>
         </div>
@@ -60,12 +59,12 @@ const Profile=()=>{
         </div>
         </div>
         <div className={styles.mypost}>
-        <Header heading={'My Post'}/>
+        <Header heading={'Contact Me'}/>
+        <Header heading={profileobj.email}/>
        </div>
         <div className={styles.mypostlist}>
-            <ProfilePost/>
         </div>
         </>
     );
 }
-export default Profile;
+export default OtherProfile;

@@ -1,13 +1,16 @@
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import styles from '../styles/viewpostpage.module.css'
-import Navbar from "./Navbar";
+import Navbar from "./Navbars/Navbar";
 import UserCard from "./user_card/UserCard";
 import Commentbox from "./CommentBox";
 import { useEffect, useState } from "react";
 import Home from "../Route/Home";
 import axios from "axios";
-import {FcLike} from 'react-icons/fc';
-import {GrFavorite} from 'react-icons/gr';
+
+import Publish from "./Publish";
+import PostUserCard from "./user_card/PostUserCard";
+import PostLikes from "./Likes/PostLikes";
+import AddToList from "./Lists/AddToList";
 const ViewPostPage=()=>{
   const location=useLocation();
   
@@ -23,6 +26,7 @@ const ViewPostPage=()=>{
     username:location.state.username,
     Comments: location.state.Comments,
     post_id:location.state.post_id,
+    user_id:location.state.user_id,
   });
   const [editing,setEditing] = useState(false);
   const updatebackend=(postobj)=>{
@@ -43,32 +47,47 @@ const ViewPostPage=()=>{
   const handleDeleting = () =>{
     console.log('delete post');
     updatebackend(postobj);
-    const del={
-      token:token,
-      post_id:postobj.post_id
-    };
-    deletepost(del);
+    deletepost();
     nav('/');
   }
   const deletepost= async(formdata)=>{
-    axios.post('http://127.0.0.1:3000/delete-post',formdata)
+    console.log(formdata);
+    axios.delete('http://localhost:3000/delete-post?token='+token+"&post_id="+parseInt(postobj.post_id))
     .then((response) => {
       console.log('Response:', response.data,response.status);
         if(response.data.status===200){
-            localStorage.setItem('isLoggedIn',true);
           alert('post deleted Successfully');
           }
-        else if(response.status!==200){
-        
-        }
         else{
+          alert(response.data.msg);
         }
     })
     .catch((error) => {
-      console.error('Error:', error);
+      alert('Error:', error);
     });
   };
-  
+  const saveforlaterapi= async(formdata)=>{
+    axios.post('http://localhost:3000/add-to-save-laters',formdata)
+    .then((response) => {
+      console.log('Response:', response.data,response.status);
+        if(response.data.status===200){
+          alert('post saved for later... ');
+          }
+        else{
+          alert(response.data.msg);
+        }
+    })
+    .catch((error) => {
+      alert('Error:', error);
+    });
+  };
+  const saveforlater=()=>{
+    const obj={
+      token:token,
+      post_id:postobj.post_id,
+    }
+      saveforlaterapi(obj);
+  };
   const handleUpdatedDone= (event)=>{
     if(event.key==='Enter'){
     setEditing(false);
@@ -81,71 +100,16 @@ const handlechange=(e)=>{
         [e.target.name]:e.target.value
       })
 };
-const token=localStorage.getItem('token');
 
-const callapi= async(formdata)=>{
-  axios.post('http://127.0.0.1:3000/like-post',formdata)
-  .then((response) => {
-    console.log('Response:', response.data,response.status);
-      if(response.data.status===200){
-          localStorage.setItem('isLoggedIn',true);
-      }
-      else if(response.status!==200){
-      
-      }
-      else{
-      }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
-};
-
-const unlikepost= async(formdata)=>{
-  axios.post('http://127.0.0.1:3000/unlike-post',formdata)
-  .then((response) => {
-    console.log('Response:', response.data,response.status);
-      if(response.data.status===200){
-          localStorage.setItem('isLoggedIn',true);
-      }
-      else if(response.status!==200){
-      
-      }
-      else{
-      }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
-};
-
-const [LikeState,setLikeState]=useState(false);
-const likeit=(e)=>{
- if(LikeState){
-  setPostobj({
-    ...postobj,
-    LikesCount:postobj.LikesCount-1,
-  })
-  unlikepost({
-    token:token,
-    post_id:postobj.post_id,
-  });
-}
-  else{
-    setPostobj({
-      ...postobj,
-      LikesCount:postobj.LikesCount+1,
-    })
-    callapi({
-      token:token,
-      post_id:postobj.post_id,
-    });
-  }
-  setLikeState(!LikeState);
- 
-}
-
-    return(
+var token=localStorage.getItem('token');
+const [reading_time,setreadingtime]=useState(0);
+useEffect(() => {
+  const interval = setInterval(() => setreadingtime(reading_time=>reading_time+1), 1000);
+  return () => {
+    clearInterval(interval);
+  };
+}, []);
+return(
         <>
         <Navbar />
       <div className={styles.maincont}>
@@ -162,9 +126,8 @@ const likeit=(e)=>{
         onChange={handlechange}
         placeholder="Enter Title Here"
         />
-        <div className={styles.userclass}>
-        <UserCard username={postobj.username}/>
-        <button>Follow</button>
+        <div className={styles.userclass} >
+        <PostUserCard username={postobj.username} user_id={postobj.user_id}/>
         </div>
         <div className={styles.topicdate}>
         <div className={styles.topicclass} style={viewMode}>
@@ -186,17 +149,10 @@ const likeit=(e)=>{
 
         </div>
         <div className={styles.likecommentview}>
-        <div className={styles.likeclass} >
-        <h3>{LikeState ?
-               <button className={styles.likebtn} onClick={likeit}><FcLike size={30}/></button>
-               :<button className={styles.likebtn} onClick={likeit}><GrFavorite size={30}/></button>
-        }
-        <div className={styles.likebtn}>{postobj.LikesCount}</div></h3>
-        </div>
-        <div className={styles.commentclass}>
-        </div>
+        <PostLikes post_id={postobj.post_id} LikesCount={postobj.LikesCount}/>
         <div className={styles.viewclass}>
        <h3>View :{postobj.ViewCount}</h3>
+        <h3>Reading Time: {reading_time}</h3>
         </div>
         </div>
         <div className={styles.imageclass}>
@@ -212,11 +168,15 @@ const likeit=(e)=>{
         className={styles.textInput}
         onKeyDown={handleUpdatedDone}
         onChange={handlechange}
-       
         placeholder="Enter Content Here"
         />
-        { localStorage.getItem('token')
-  ?
+        <div className={styles.editpost}>
+          <button onClick={saveforlater}>Save For Later</button>
+          <AddToList post_id={postobj.post_id}/>
+          </div>
+          
+        { localStorage.getItem('username')===postobj.username
+  ?<>
         <div className={styles.editdeletepost}>
         <div className={styles.editpost}>
           <button onClick={handleEditing}>Edit Post</button>
@@ -225,6 +185,8 @@ const likeit=(e)=>{
           <button onClick={handleDeleting}>Delete  Post</button>
           </div>
           </div>
+          <Publish post_id={location.state.post_id}/>
+          </>
           :<></>
         }
        </div>

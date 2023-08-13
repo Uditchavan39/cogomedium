@@ -2,6 +2,7 @@ import {  useNavigate } from 'react-router-dom';
 import styles from '../styles/singlepost.module.css'
 import UserCard from './user_card/UserCard';
 import SignIn from '../Route/SignIn';
+import { useState } from 'react';
 const SinglePostCard=({post})=>{
     const navigage=useNavigate();
     const handleonclick=()=>{ 
@@ -17,10 +18,20 @@ const SinglePostCard=({post})=>{
      ViewCount:post.ViewCount,
      username:post.username,
      Comments:comtostr,
-     isLoggedIn:true,
+     user_id:post.user_id,
     }});
-     console.log('clicked',post.Comments);
+   const localuser=parseInt(localStorage.getItem('user_id'));
+   console.log('clicked',post.user_id,localuser);  
+   const currentplan=parseInt(localStorage.getItem('current_plan'));
+   const post_view=parseInt(localStorage.getItem('post_view'));
+  
+   if(post.user_id!==localuser && currentplan>post_view){
+        localStorage.setItem('post_view',parseInt(localStorage.getItem('post_view'))+1);
+     }
+if(currentplan<=post_view && post.user_id!==localuser){
+        navigage('/payment',{replace:true});
     }
+}
 
     return(
         <>

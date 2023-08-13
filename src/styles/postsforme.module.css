@@ -1,0 +1,17 @@
+.maincont{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: auto;
+    justify-content: space-between;
+
+}
+
+.btn{
+    width: 49%;
+    border: none;
+    line-height: 30px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+}

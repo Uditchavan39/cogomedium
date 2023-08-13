@@ -6,7 +6,7 @@ import NavbarUserCard from "./user_card/NavbarUserCard";
 import axios from "axios";
 const AddComment=({post_id})=>{
     const [comment, setComment]=useState('');
-    const username=localStorage.getItem('useremail')!==null;
+    const username=localStorage.getItem('username')!==null;
     const token=localStorage.getItem('token');
     const callapi= async(formdata)=>{
         axios.post('http://127.0.0.1:3000/add-comment',formdata)

@@ -1,31 +1,17 @@
-.signupstyle{
-    display: flex;
-    flex-direction: column; 
-    margin: auto;
-    justify-content: center;
-}
-.eachelem{
-    margin: 10px;
-
-}
 .formcontainer{
     display: flex;
     border-radius: calc(0.1*100px);
     box-shadow: 0px 4px 14px 0px rgba(70,70,70,0.38);
-    justify-content: center;
+    justify-content: space-around;
     background: #fff;
     font-size: 1rem;
-    width: 400px;
-    margin: auto;
-    margin-bottom: 25px;
 }
 .inputtext{
-    width: 100%;
+    width: 85%;
     padding-right: 5px;
     padding-left: 10px;
     border-radius: calc(0.5*100px);
     font-size: 1rem;
-    border: none;
 }
 .inputtext::placeholder{
     color: #000;
@@ -44,17 +30,14 @@
     border: none;
     
 }
-.submit-warning{
+.submitwarning{
     font-size: 13px;
     color: red;
     margin-top: 5px;
     display: block;
 }
-.signupimg{
-    width: 150px;
-    height: 300px;
-    overflow: auto;
-}
-.errormsg{
-    color: red;
+.inputsubmit svg{
+    color: #5e5e5e;
+    font-size: 20px;
+    margin-top: 2px;
 }

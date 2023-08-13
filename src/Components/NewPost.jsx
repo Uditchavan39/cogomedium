@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "./Navbars/Navbar";
 
 import styles from '../styles/Newpost.module.css'
 import Imageinput from "./Imageinput";
@@ -8,9 +8,10 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import SignIn from "../Route/SignIn";
 import axios from "axios";
  const NewPost=()=>{
+   var token= localStorage.getItem('token');
     const obj={
-        isLoggedIn:localStorage.getItem('token')
-       }
+        isLoggedIn: token
+    }
       
    const navigate=useNavigate();
 
@@ -25,10 +26,7 @@ import axios from "axios";
         CommentsCount:0,          
         Comments:[{comment:'nice one',username:'udit chavan'},{comment:'good!!!',username:'AJ Warrior'},{comment:'how are you',username:'skippy'}],
         LikesCount:1,
-        ViewCount:2,
-        username:'Udit Chavan',
-        isLoggedIn:true,
-        
+        ViewCount:2,      
     }];
     callapi();
       localStorage.setItem('postsaved',JSON.stringify(postobjectsubmitted))
@@ -46,35 +44,28 @@ const callapi= async()=>{
     .then((response) => {
       console.log('Response:', response.data,response.status);
         if(response.data.status===200){
-            localStorage.setItem('isLoggedIn',true);
             alert(response.data.msg);
             navigate('/profile');
  
         }
         else if(response.status!==200){
-        
+            alert("Failed To Create Post.");
+          
         }
         else{
+            alert("Failed To Create Post.");
+        
         }
     })
     .catch((error) => {
       console.error('Error:', error);
+      alert("Error: "+error);
     });
 };
-
-    const handlesubmit=()=>{
-        if(postobj.title.trim() && postobj.topic.trim() && postobj.content.trim() && imageUrl.toString().trim()){
-            console.log('all input collected');
-            sendtobackend();
-            setMessage('');
-            
-        }else{
-            setMessage(
-              'Every Field is Required...');
-            console.log('error set');
-        }
-        console.log("submit");
-    }
+const handledraft=()=>{
+    sendtobackend();
+}
+    
     const [imageUrl,setImageUrl]=useState([]);
     const [message,setMessage]=useState('');
     const [postobj,setPostobj] =useState({
@@ -99,9 +90,10 @@ const callapi= async()=>{
 
          <Imageinput imageUrl={imageUrl} setImageUrl={setImageUrl}/>
          <span className={styles.submitwarning}>{message}</span>
-        
-       <div className={styles.submitbtncont}>
-        <button className={styles.submitbtn} onClick={handlesubmit}>Submit</button>
+        <div className={styles.draftsubmit}>
+         <div className={styles.submitbtncont}>
+        <button className={styles.submitbtn} onClick={handledraft}>Draft</button>
+        </div>
         </div>
     </div>
    
